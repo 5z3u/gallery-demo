@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>图册 · 带图片与下载包的网页</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(165deg,#0b1120,#172033);color:#e5e7eb;
+ font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:26px 18px 60px;line-height:1.7}
+.wrap{max-width:640px;margin:0 auto}
+h1{font-size:23px;margin-bottom:6px}
+.meta{color:#94a3b8;font-size:12px;margin-bottom:22px}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gal figure{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;
+ border:1px solid rgba(255,255,255,.12);transition:transform .18s}
+.gal figure:first-child{grid-column:1/-1}
+.gal figure:active{transform:scale(.98)}
+.gal img{width:100%;display:block;height:210px;object-fit:cover}
+.gal figure:first-child img{height:300px}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 12px;
+ background:linear-gradient(transparent,rgba(0,0,0,.75));font-size:13px}
+.dl{margin-top:26px;padding:18px;border-radius:18px;
+ background:rgba(99,102,241,.10);border:1px solid rgba(99,102,241,.28)}
+.dl h3{font-size:16px;margin-bottom:6px}
+.dl p{font-size:13px;color:#94a3b8;margin-bottom:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;
+ padding:14px;border-radius:14px;color:#fff;text-decoration:none;font-weight:600;font-size:15px;
+ background:linear-gradient(135deg,#6366f1,#ec4899);transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.alt{background:transparent;border:1px solid rgba(255,255,255,.22);margin-top:10px;font-weight:500}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.12);margin-top:12px;overflow:hidden;display:none}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6366f1,#ec4899);transition:width .3s}
+.tip{margin-top:10px;font-size:12px;color:#94a3b8;min-height:17px}
+.light{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;
+ align-items:center;justify-content:center;z-index:9;padding:20px}
+.light.on{display:flex}
+.light img{max-width:100%;max-height:82vh;border-radius:14px}
+.light span{position:absolute;top:22px;right:22px;font-size:30px;color:#fff;cursor:pointer}
+footer{margin-top:34px;text-align:center;font-size:11px;color:#94a3b8;opacity:.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>图册 · 图片与下载包</h1>
+  <div class="meta">托管在 GitHub Pages · 资源为仓库真实文件</div>
+
+  <div class="gal">
+    <figure onclick="zoom(this)"><img src="assets/p1.jpg" alt="山川与海"><figcaption>山川与海</figcaption></figure>
+    <figure onclick="zoom(this)"><img src="assets/p2.jpg" alt="城市夜色"><figcaption>城市夜色</figcaption></figure>
+    <figure onclick="zoom(this)"><img src="assets/p3.jpg" alt="晨间微光"><figcaption>晨间微光</figcaption></figure>
+  </div>
+
+  <div class="dl">
+    <h3>📦 离线网页包.zip</h3>
+    <p>含页面本体 + 三张配图 + 说明，解压后双击即可离线打开</p>
+    <a class="btn" id="dlbtn" href="offline-page.zip" download>立即下载（134 KB）</a>
+    <a class="btn alt" href="offline-page.zip" target="_blank">在新标签页查看</a>
+    <div class="bar" id="bar"><i></i></div>
+    <div class="tip" id="tip"></div>
+  </div>
+
+  <footer>由 AI 助手生成 · GitHub Pages 静态托管</footer>
+</div>
+
+<div class="light" id="light" onclick="this.classList.remove('on')">
+  <span>×</span><img id="big" src="" alt="">
+</div>
+
+<script>
+function zoom(f){
+  document.getElementById('big').src = f.querySelector('img').src;
+  document.getElementById('light').classList.add('on');
+}
+var btn=document.getElementById('dlbtn'), bar=document.getElementById('bar'),
+    tip=document.getElementById('tip'), done=false;
+btn.addEventListener('click', function(){
+  if(done) return; done=true;
+  bar.style.display='block'; var w=0;
+  var t=setInterval(function(){
+    w=Math.min(100,w+Math.random()*26);
+    bar.firstElementChild.style.width=w+'%';
+    if(w>=100){
+      clearInterval(t);
+      tip.textContent='开始下载，134 KB，请查看浏览器下载列表';
+      setTimeout(function(){ tip.textContent='若浏览器未自动下载，可长按链接选择「下载链接」'; }, 4000);
+    }
+  },180);
+});
+</script>
+</body>
+</html>
